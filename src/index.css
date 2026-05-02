@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: #ffffff;
+  --color-surface: #f7f7f7;
+  --color-primary-yellow: #ffec00;
+  --color-text-main: #1d1d1f;
+  --color-text-muted: #86868b;
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-text-main font-sans antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-sans tracking-tight font-semibold;
+  }
+}
+
+@layer utilities {
+  .minimal-card {
+    @apply bg-[#fafafa] border border-black/5 hover:border-black/10 transition-all duration-300;
+  }
+  
+  .text-title {
+    @apply text-[#1d1d1f] font-semibold tracking-[-0.03em];
+  }
+
+  .text-description {
+    @apply text-[#86868b] leading-[1.4];
+  }
+
+  .selection-yellow {
+    @apply selection:bg-primary-yellow selection:text-black;
+  }
+
+  .neural-grid {
+    background-image: 
+      linear-gradient(rgba(255, 236, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 236, 0, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .animate-blink {
+    animation: blink 1.5s ease-in-out infinite;
+  }
+}
