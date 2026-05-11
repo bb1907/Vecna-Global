@@ -18,133 +18,185 @@ import {
   Crosshair,
   Activity,
   GraduationCap,
-  Briefcase
+  Briefcase,
+  Shield,
+  Layers,
+  Globe,
+  Database,
+  Search,
+  Zap,
+  Users,
+  CheckCircle2,
+  Lock,
+  FileText,
+  Workflow
 } from "lucide-react";
 import { useState, useEffect, FormEvent } from "react";
 
 const NAV_LINKS = [
   { name: "Home", id: "home" },
-  { name: "What We Do", id: "what-we-do", dropdown: ["Private Equity", "Private Credit", "Infrastructure"] },
-  { name: "Who We Serve", id: "who-we-serve", dropdown: ["Institutional Investors", "Private Wealth"] },
-  { name: "Services", id: "services", dropdown: ["Technology", "Investment", "Finance", "Education", "Consulting"] },
-  { name: "Network", id: "network" }
+  { name: "What We Do", id: "what-we-do" },
+  { name: "Brand Hierarchy", id: "brands" },
+  { name: "Architecture", id: "architecture" },
+  { name: "Governance", id: "governance" },
+  { name: "Team", id: "team" }
 ];
 
-const WHAT_WE_DO = [
+const WHAT_THIS_IS = [
   {
-    title: "Private Equity",
-    description: "Focusing on mid-market growth companies through secondary, primary and co-investment strategies.",
-    features: ["Secondary Portfolio Acquisitions", "Primary Fund Commitments", "Direct Co-investments"]
-  },
-  {
-    title: "Private Credit",
-    description: "Providing diversified senior and junior debt solutions to mid-market private equity-backed companies.",
-    features: ["Senior Secured Loans", "Mezzanine Financing", "Direct Lending"]
-  },
-  {
-    title: "Infrastructure",
-    description: "Direct investments in long-term, stable assets with essential service characteristics.",
-    features: ["Energy Transition", "Digital Infrastructure", "Transportation Nodes"]
-  }
-];
-
-const WHO_WE_SERVE = [
-  {
-    title: "Institutional Investors",
-    description: "Partnering with pension funds, endowments, and insurance companies globally to meet long-term yield objectives.",
+    title: "Legal & Strategic Parent",
+    description: "Vecna Global B.V. holds the operating structure, commercial discipline, contracts, and venture coordination.",
     icon: Building2
   },
   {
-    title: "Private Wealth",
-    description: "Providing high-net-worth individuals and family offices with institutional-quality access to private markets.",
-    icon: Briefcase
+    title: "Governance Protocol",
+    description: "T-BEC defines trust, contribution standards, founder behavior, and collaboration rules. It is not a company.",
+    icon: Shield
+  },
+  {
+    title: "AI Product Intelligence",
+    description: "Sharon and SharonX form the product intelligence and ecosystem layer for AI concierge and conversational commerce.",
+    icon: Zap
+  },
+  {
+    title: "Execution Network",
+    description: "Soolx, YapZek AI, and GBeess support finance, technology, growth, branding, and sales execution.",
+    icon: Workflow
   }
 ];
 
-const STATS = [
-  { label: "Track Record", value: "25+", unit: "Years", subtext: "Continuous Market Dominance" },
-  { label: "Capital Management", value: "$2B+", unit: "Managed", subtext: "Precision Liquid Assets" },
-  { label: "Operations", value: "GLOBAL", unit: "Reach", subtext: "Multi-Node Distribution" },
-];
-
-const SECTORS = [
+const BRAND_HIERARCHY = [
   {
-    title: "Technology",
-    icon: Cpu,
-    description: "Pioneering semiconductors and advanced AI systems that form the backbone of modern computation.",
-    cta: "INITIATE ACCESS"
+    title: "Sharon",
+    subtitle: "AI intelligence layer",
+    description: "Product logic, conversational experience, and intelligent assistance protocol.",
+    status: "Core OS"
   },
   {
-    title: "Investment",
-    icon: Coins,
-    description: "Strategic capital deployment aimed at hyper-scaling deep-tech infrastructure and research labs.",
-    cta: "VIEW PORTFOLIO"
+    title: "SharonX",
+    subtitle: "Venture & brand ecosystem",
+    description: "Supports new AI products and distribution logic for the global marketplace.",
+    status: "Ecosystem"
   },
   {
-    title: "Finance",
-    icon: LineChart,
-    description: "Executing high-frequency algorithmic trading strategies with precision risk-mitigation protocols.",
-    cta: "DATA STREAMS"
+    title: "fly.sharonx.eu",
+    subtitle: "AI Travel Concierge",
+    description: "Current active product-facing AI travel and lifestyle assistant experience.",
+    status: "Active Product"
   },
   {
-    title: "Education",
-    icon: GraduationCap,
-    description: "Empowering the next generation of innovators through advanced learning platforms and data-driven education.",
-    cta: "LEARN MORE"
+    title: "SharonXAcademy",
+    subtitle: "Education Vertical",
+    description: "Structured learning, skills, and training programs powered by AI intelligence.",
+    status: "Vertical"
   },
   {
-    title: "Consulting",
-    icon: Briefcase,
-    description: "Enterprise-grade strategic advisory services focused on digital transformation and operational excellence.",
-    cta: "CONSULT NOW"
+    title: "Yuff!",
+    subtitle: "AI Education Product",
+    description: "Focused learning journeys designed for high-retention knowledge transfer.",
+    status: "Vertical"
+  },
+  {
+    title: "OS-Carr",
+    subtitle: "Financial Intelligence",
+    description: "Future finance, audit, and payout intelligence productization path.",
+    status: "Future Roadmap"
   }
 ];
 
-const PILLARS = [
+const VENTURE_CAPS = [
   {
-    id: "network",
-    title: "Network Infrastructure",
-    description: "Our proprietary global mesh network operates across 42 sovereign nodes, providing ultra-low latency data transmission and failsafe redundancy for mission-critical operations.",
-    features: ["Quantum Mesh Topology", "Self-Healing Protocols", "Sovereign Node Isolation"]
+    title: "AI Concierge",
+    description: "Conversation-based guidance, planning, and decision support for high-intent users.",
+    icon: Search
   },
   {
-    id: "compliance",
-    title: "Institutional Compliance",
-    description: "Vecna Global adheres to the highest tier of international regulatory frameworks, ensuring complete legal transparency and institutional-grade accountability in every jurisdiction.",
-    features: ["Global AML/KYC Sync", "Real-time Auditing", "Cross-Border Tax Logic"]
+    title: "AI Chat Commerce",
+    description: "Intent detection, guided selling, and conversion logic across conversational surfaces.",
+    icon: LineChart
   },
   {
-    id: "security",
-    title: "Security & Encryption",
-    description: "Security is built into the silicon level. We utilize post-quantum cryptographic standards and hardware-isolated security modules (HSM) to protect institutional assets.",
-    features: ["Post-Quantum RSA", "Hardware Isolation", "Zero-Knowledge Proofs"]
-  },
-  {
-    id: "privacy",
-    title: "Zero-Trust Privacy",
-    description: "Anonymity is a fundamental protocol. Our ecosystem utilizes stealth-addressing and decoupled identity layers to ensure that user privacy remains absolute and untraceable.",
-    features: ["Decoupled Identity", "Signature Masking", "Ephemeral Data Logs"]
+    title: "Enterprise AI Assistants",
+    description: "Configurable AI support for customer service, internal operations, and business workflows.",
+    icon: Database
   }
+];
+
+const FOUNDERS = [
+  {
+    name: "Erhan Dönmez",
+    role: "Strategy & Risk",
+    description: "Venture architecture, commercial framing, and strategic orchestration.",
+    icon: Crosshair
+  },
+  {
+    name: "Bülent Bulut",
+    role: "Fintech & Treasury",
+    description: "Payment logic, financial coordination, and treasury discipline.",
+    icon: Coins
+  },
+  {
+    name: "Karay Akar",
+    role: "AI & Infrastructure",
+    description: "Software engineering, infrastructure, and core product engine.",
+    icon: Cpu
+  },
+  {
+    name: "Gamze Berçinli",
+    role: "Growth & Branding",
+    description: "Community building, branding, and sales network execution.",
+    icon: Globe
+  }
+];
+
+const GOVERNANCE = [
+  {
+    title: "T-BEC Protocol Charter",
+    description: "Defines governance logic, collaboration standards, and behavioral principles.",
+    icon: FileText
+  },
+  {
+    title: "Consortium Agreement",
+    description: "Defines company roles, operational responsibilities, and commercial flow.",
+    icon: Shield
+  },
+  {
+    title: "Founder Memorandum",
+    description: "Clarifies founder intent, decision principles, and commercial alignment.",
+    icon: Users
+  },
+  {
+    title: "Ethics & Growth Framework",
+    description: "Documented standards for trust, ownership, revenue, and exit discipline.",
+    icon: CheckCircle2
+  }
+];
+
+const ROADMAP = [
+  { step: "01", title: "Finalize Structure", desc: "Confirm corporate roles, protocol boundaries, and brand hierarchy." },
+  { step: "02", title: "Sign Documentation", desc: "Execute T-BEC Charter, Consortium Agreement, and core statements." },
+  { step: "03", title: "Activate Operations", desc: "Open hub.vecna.global workflows and coordination logic." },
+  { step: "04", title: "Focus Product Delivery", desc: "Prioritize fly.sharonx.eu and SharonX roadmap execution." },
+  { step: "05", title: "Measure First Signal", desc: "Track product delivery, customer traction, and early revenue discipline." }
+];
+
+const INVESTMENT_WHY = [
+  { title: "Why Now", desc: "AI concierge, conversational commerce, and automation demand are converging simultaneously." },
+  { title: "Use of Funds", desc: "Infrastructure, sales activation, treasury workflows, and early execution capacity." },
+  { title: "Why This Team", desc: "Strategy, fintech, AI infrastructure, and growth capability at one table." }
 ];
 
 const PromptHeart = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary-yellow">
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-cyan-400">
     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
   </svg>
 );
 
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: ""
-  });
-
+  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Simulate submission
-    alert("Message received. Our orchestration team will verify your credentials.");
+    alert("Briefing request received. Our orchestration team will verify your credentials.");
     onClose();
   };
 
@@ -152,84 +204,24 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 z-[100] bg-white/60 backdrop-blur-md"
-          />
-          <motion.div 
-            initial={{ opacity: 0, y: 100, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.95 }}
-            className="fixed inset-x-4 bottom-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-[101] w-full max-w-xl bg-white border border-black/5 shadow-2xl p-8 md:p-12 rounded-[32px]"
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md" />
+          <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 100 }} className="fixed inset-x-4 bottom-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-[101] w-full max-w-xl bg-[#0f172a] border border-white/10 shadow-2xl p-8 md:p-12 rounded-[32px] text-white">
             <div className="flex justify-between items-start mb-12">
               <div>
-                <h2 className="text-3xl font-semibold tracking-tight mb-2">Connect</h2>
-                <p className="text-black/50">Establish a secure line with our global nodes.</p>
+                <h2 className="text-3xl font-semibold tracking-tight mb-2">Private Briefing</h2>
+                <p className="text-white/50">Request access to the venture architecture portfolio.</p>
               </div>
-              <button 
-                onClick={onClose}
-                className="p-2 hover:bg-black/5 rounded-full transition-colors"
-              >
-                <X size={24} />
-              </button>
+              <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full transition-colors"><X size={24} /></button>
             </div>
-
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-black/40">Full Name</label>
-                  <input 
-                    required
-                    type="text" 
-                    placeholder="Enter full name"
-                    className="w-full bg-transparent border-b border-black/10 py-3 focus:outline-none focus:border-black transition-colors"
-                    value={formData.name}
-                    onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-black/40">Email Protocol</label>
-                  <input 
-                    required
-                    type="email" 
-                    placeholder="email@example.com"
-                    className="w-full bg-transparent border-b border-black/10 py-3 focus:outline-none focus:border-black transition-colors"
-                    value={formData.email}
-                    onChange={e => setFormData({ ...formData, email: e.target.value })}
-                  />
-                </div>
+                <input required placeholder="Full Name" className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-cyan-400 transition-colors" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                <input required type="email" placeholder="Email Address" className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-cyan-400 transition-colors" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
               </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-black/40">Inquiry Subject</label>
-                <input 
-                  required
-                  type="text" 
-                  placeholder="Portfolio, Partnership, Investment..."
-                  className="w-full bg-transparent border-b border-black/10 py-3 focus:outline-none focus:border-black transition-colors"
-                  value={formData.subject}
-                  onChange={e => setFormData({ ...formData, subject: e.target.value })}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-black/40">Communication</label>
-                <textarea 
-                  required
-                  rows={4}
-                  placeholder="Briefly state your orchestrational goal"
-                  className="w-full bg-transparent border-b border-black/10 py-3 focus:outline-none focus:border-black transition-colors resize-none"
-                  value={formData.message}
-                  onChange={e => setFormData({ ...formData, message: e.target.value })}
-                />
-              </div>
-
-              <button className="w-full bg-black text-white py-5 rounded-full font-semibold flex items-center justify-center gap-3 hover:bg-black/90 transition-all active:scale-[0.98]">
-                Initiate Transmission <Send size={18} />
+              <input required placeholder="Inquiry Subject" className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-cyan-400 transition-colors" value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })} />
+              <textarea required rows={4} placeholder="Briefly state your orchestrational goal" className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-cyan-400 transition-colors resize-none" value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} />
+              <button className="w-full bg-cyan-500 text-black py-5 rounded-full font-bold flex items-center justify-center gap-3 hover:bg-cyan-400 transition-all active:scale-[0.98]">
+                Request Briefing <Send size={18} />
               </button>
             </form>
           </motion.div>
@@ -239,218 +231,60 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
   );
 };
 
-const MAP_NODES = [
-  { id: "edtech", name: "Edtech Hub", top: "35%", left: "48%", status: "Active", latency: "12ms", sector: "Education" },
-  { id: "ai", name: "AI Node", top: "32%", left: "25%", status: "Live", latency: "8ms", sector: "AI/ML" },
-  { id: "soolx", name: "Soolx Cluster", top: "45%", left: "75%", status: "Synced", latency: "45ms", sector: "Web3" },
-  { id: "consult", name: "Consulting HQ", top: "38%", left: "52%", status: "Live", latency: "14ms", sector: "Enterprise" },
-  { id: "tech", name: "Technology Forge", top: "60%", left: "35%", status: "Online", latency: "22ms", sector: "R&D" },
-];
+const ArchitectureMap = () => (
+  <div className="relative w-full max-w-4xl mx-auto py-20">
+    <div className="flex flex-col items-center gap-12 relative z-10">
+      <motion.div 
+        whileHover={{ scale: 1.05 }}
+        className="p-8 bg-cyan-500 text-black rounded-3xl font-bold text-center shadow-[0_0_50px_rgba(34,211,238,0.3)] border-2 border-white/20"
+      >
+        Vecna Global B.V.
+        <div className="text-[10px] uppercase tracking-widest mt-1 opacity-70">Strategic Parent</div>
+      </motion.div>
 
-const NetworkMapModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-10 w-[1px] bg-white/20" />
+        <div className="px-6 py-3 bg-white/5 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-cyan-400">T-BEC Protocol</div>
+        <div className="h-10 w-[1px] bg-white/20" />
+      </div>
 
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[200] bg-[#050506] flex flex-col overflow-hidden"
-        >
-          {/* Header */}
-          <div className="flex justify-between items-center px-8 py-6 border-b border-white/5 z-20 bg-black/80 backdrop-blur-xl">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Crosshair className="text-primary-yellow size-6 animate-pulse" />
-                <div className="absolute inset-0 bg-primary-yellow/20 blur-xl rounded-full" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold tracking-tight text-white uppercase italic leading-none">Global Connectivity Matrix</h2>
-                <div className="flex gap-4 mt-2 text-[9px] font-black text-white/30 tracking-[0.3em] uppercase">
-                  <span className="flex items-center gap-1.5"><div className="size-1 bg-primary-yellow rounded-full animate-blink" /> Live Status: Active</span>
-                  <span>Encryption: Quantum-RSA</span>
-                </div>
-              </div>
-            </div>
-            <button 
-              onClick={onClose}
-              className="group p-3 bg-white/5 hover:bg-primary-yellow rounded-full transition-all text-white hover:text-black border border-white/10"
-            >
-              <X size={20} className="group-hover:rotate-90 transition-transform" />
-            </button>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+        {["Soolx Treasury", "YapZek AI", "GBeess Growth"].map((exec, i) => (
+          <motion.div 
+            key={exec}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="p-6 bg-white/5 border border-white/10 rounded-2xl text-center"
+          >
+            <div className="font-bold text-sm text-white mb-1">{exec}</div>
+            <div className="text-[9px] uppercase tracking-widest text-white/30">Execution Network</div>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="h-10 w-[1px] bg-white/20" />
+
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">
+        {["fly.sharonx.eu", "SharonXAcademy", "Yuff!", "Sharon", "OS-Carr"].map((product) => (
+          <div key={product} className="p-4 bg-white/5 border border-white/10 rounded-xl text-center opacity-60">
+            <div className="font-medium text-[10px] text-white">{product}</div>
           </div>
+        ))}
+      </div>
 
-          <div className="flex-1 flex flex-col lg:flex-row relative">
-            {/* Sidebar List for quick access */}
-            <div className="w-full lg:w-80 border-r border-white/5 bg-black/40 backdrop-blur-xl p-8 z-20 overflow-y-auto max-h-[30vh] lg:max-h-none">
-              <div className="text-[10px] font-black text-primary-yellow/50 uppercase tracking-[0.3em] mb-8">Active Protocols</div>
-              <div className="flex flex-col gap-3">
-                {MAP_NODES.map((node) => (
-                  <button
-                    key={node.id}
-                    onMouseEnter={() => setHoveredNode(node.id)}
-                    onMouseLeave={() => setHoveredNode(null)}
-                    onClick={() => setSelectedNode(node.id === selectedNode ? null : node.id)}
-                    className={`text-left p-4 rounded-2xl border transition-all duration-300 ${
-                      selectedNode === node.id 
-                        ? "bg-primary-yellow/10 border-primary-yellow text-white" 
-                        : "bg-white/5 border-white/5 text-white/60 hover:bg-white/10"
-                    }`}
-                  >
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-xs font-bold tracking-widest uppercase">{node.name}</span>
-                      <Activity size={12} className={selectedNode === node.id ? "text-primary-yellow" : "opacity-20"} />
-                    </div>
-                    <div className="text-[9px] font-medium text-white/40 uppercase tracking-tighter">{node.sector} • {node.latency}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Map Area */}
-            <div className="relative flex-1 bg-[#020203] overflow-hidden group/map">
-              {/* Background Grid */}
-              <div className="absolute inset-0 neural-grid opacity-20" />
-              
-              {/* Interactive World Map */}
-              <div className="absolute inset-0 flex items-center justify-center p-12 lg:p-24">
-                <div className="relative w-full h-full max-w-6xl aspect-[2/1] transition-transform duration-1000 ease-out flex items-center justify-center">
-                  
-                  {/* The Map Image - Optimized Visibility */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img 
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx5Jhk4dKn8zODOPAsEByqjr4HdyaEtJPz7pI272h0jZhEkwXrVeQrAiDT8yEJ_FW5XE62UeTMHDYU6bYSbRa-4VS2KsitkJz4pzQ6yujykDeYLgDXkLktTUrWFl6A8GwJkfsIjHEL4Ywn8be3VnrDC6nBLemOPhre2aN6TU_nlvO2yiI__oHVUIoeXhFRZgDSQVF5AEygUt6MoGnSNPYq8B_ALhTMcgPALJQAjHG2-yAWoMNl_ZlueDvqOiJfnyNfjx-XDOzfD-4" 
-                      alt="Matrix Map" 
-                      className="w-full h-full object-contain invert opacity-40 brightness-150 contrast-125 saturate-0"
-                    />
-                    {/* Dark gradient to fade edges of map image container if necessary */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(5,5,6,1)_100%)]" />
-                  </div>
-
-                  {/* Hotspots */}
-                  {MAP_NODES.map((node) => (
-                    <div
-                      key={node.id}
-                      className="absolute z-30"
-                      style={{ top: node.top, left: node.left }}
-                    >
-                      <button
-                        onMouseEnter={() => setHoveredNode(node.id)}
-                        onMouseLeave={() => setHoveredNode(null)}
-                        onClick={() => setSelectedNode(node.id === selectedNode ? null : node.id)}
-                        className="relative group/node"
-                      >
-                        {/* Interactive Rings */}
-                        <motion.div 
-                          animate={{ 
-                            scale: [1, 1.5, 1],
-                            opacity: [0.1, 0.4, 0.1]
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="absolute -inset-8 bg-primary-yellow rounded-full z-0" 
-                        />
-                        <div className={`absolute -inset-4 border-2 rounded-full transition-all duration-500 z-0 ${
-                          (hoveredNode === node.id || selectedNode === node.id) 
-                            ? "border-primary-yellow scale-110 opacity-100" 
-                            : "border-primary-yellow/20 scale-100 opacity-40 animate-pulse"
-                        }`} />
-                        
-                        {/* Core Point */}
-                        <div className={`size-4 rounded-full border-2 border-black relative z-10 transition-all duration-300 ${
-                          (hoveredNode === node.id || selectedNode === node.id)
-                            ? "bg-primary-yellow scale-125 shadow-[0_0_20px_rgba(255,236,0,0.8)]"
-                            : "bg-primary-yellow/50 scale-100 shadow-[0_0_10px_rgba(255,236,0,0.3)]"
-                        }`} />
-
-                        {/* Floating Tooltip - Only show on hover or select, with dynamic placement logic if needed (simplified here) */}
-                        <AnimatePresence>
-                          {(hoveredNode === node.id || selectedNode === node.id) && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-6 z-50 whitespace-nowrap pointer-events-none"
-                            >
-                              <div className="bg-black/95 border border-primary-yellow/40 p-5 rounded-2xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] backdrop-blur-3xl min-w-[200px]">
-                                <div className="flex justify-between items-start mb-3">
-                                  <div>
-                                    <div className="text-[9px] font-black text-primary-yellow uppercase tracking-[0.2em] mb-0.5">{node.status}</div>
-                                    <div className="text-sm font-bold text-white tracking-widest uppercase">{node.name}</div>
-                                  </div>
-                                  <div className="size-8 bg-white/5 rounded-xl flex items-center justify-center">
-                                    <Activity size={14} className="text-primary-yellow" />
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4 pt-3 border-t border-white/10">
-                                  <div>
-                                    <div className="text-[8px] text-white/30 font-bold uppercase mb-1">Latency</div>
-                                    <div className="text-[11px] text-white font-mono">{node.latency}</div>
-                                  </div>
-                                  <div className="text-right">
-                                    <div className="text-[8px] text-white/30 font-bold uppercase mb-1">Secure</div>
-                                    <div className="text-[11px] text-primary-yellow font-mono">ENCRYPTED</div>
-                                  </div>
-                                </div>
-                              </div>
-                              {/* Pointer */}
-                              <div className="w-4 h-4 bg-black/95 border-r border-b border-primary-yellow/40 rotate-45 absolute -bottom-2 left-1/2 -translate-x-1/2 z-40" />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* HUD Overlays - Better positioned */}
-              <div className="absolute bottom-12 right-12 flex flex-col gap-4 items-end z-20">
-                <div className="p-6 bg-black/80 border border-white/5 rounded-[32px] backdrop-blur-2xl shadow-2xl min-w-[240px]">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="size-2 bg-primary-yellow rounded-full animate-blink" />
-                    <div className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em]">Operational Index</div>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-[10px] mb-1.5 font-bold uppercase tracking-widest">
-                        <span className="text-white/40">Sync Rate</span>
-                        <span className="text-primary-yellow italic">99.98%</span>
-                      </div>
-                      <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          animate={{ width: "99.98%" }}
-                          className="h-full bg-primary-yellow"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-[10px] mb-1.5 font-bold uppercase tracking-widest">
-                        <span className="text-white/40">Network Load</span>
-                        <span className="text-white">Active</span>
-                      </div>
-                      <div className="text-xl font-bold text-white tracking-tighter italic">1.2 TB/s</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
+      <div className="mt-8 px-6 py-2 bg-cyan-900/30 border border-cyan-500/20 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400">
+        hub.vecna.global (Operating OS)
+      </div>
+    </div>
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.05),transparent_70%)]" />
+  </div>
+);
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [isNetworkMapOpen, setIsNetworkMapOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -458,403 +292,360 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollToHome = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.history.pushState("", document.title, window.location.pathname + window.location.search);
+  };
+
   return (
-    <div className="min-h-screen bg-[#f7f7f7] selection-yellow overflow-x-hidden text-[#1d1d1f]">
-      {/* Modals */}
-      <ContactModal 
-        isOpen={isContactModalOpen} 
-        onClose={() => setIsContactModalOpen(false)} 
-      />
-      <NetworkMapModal
-        isOpen={isNetworkMapOpen}
-        onClose={() => setIsNetworkMapOpen(false)}
-      />
+    <div className="min-h-screen bg-[#020617] selection:bg-cyan-500 selection:text-white overflow-x-hidden text-white font-sans">
+      <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
 
       {/* Navigation */}
-      <nav 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/80 backdrop-blur-md border-b border-black/5 py-4" : "bg-transparent py-8"
-        }`}
-      >
-        <div className="max-w-[1000px] mx-auto px-5 lg:px-0 flex justify-between items-center">
-          <div 
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              window.history.pushState("", document.title, window.location.pathname + window.location.search);
-            }}
-          >
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-[#020617]/80 backdrop-blur-md border-b border-white/5 py-4" : "bg-transparent py-8"}`}>
+        <div className="max-w-[1200px] mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={scrollToHome}>
             <PromptHeart />
-            <div className="text-xl font-bold tracking-tight">
-              Vecna Global
-            </div>
+            <div className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50">Vecna Global</div>
           </div>
 
           <div className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map(link => (
-              <div 
-                key={link.id}
-                className="relative group"
-                onMouseEnter={() => link.dropdown && setActiveDropdown(link.id)}
-                onMouseLeave={() => link.dropdown && setActiveDropdown(null)}
-              >
-                <a 
-                  href={`#${link.id}`}
-                  onClick={(e) => {
-                    if (link.id === 'home') {
-                      e.preventDefault();
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                      window.history.pushState("", document.title, window.location.pathname + window.location.search);
-                    }
-                  }}
-                  className="text-sm font-medium text-black/50 hover:text-black transition-colors flex items-center gap-1 py-2"
-                >
-                  {link.name}
-                  {link.dropdown && (
-                    <ChevronRight size={14} className={`transform transition-transform ${activeDropdown === link.id ? 'rotate-90' : ''}`} />
-                  )}
-                </a>
-
-                {link.dropdown && (
-                  <AnimatePresence>
-                    {activeDropdown === link.id && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        className="absolute top-full left-0 mt-2 w-48 bg-white border border-black/5 shadow-xl rounded-2xl p-2 z-[60]"
-                      >
-                        {link.dropdown.map(item => (
-                          <a 
-                            key={item}
-                            href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                            className="block px-4 py-3 text-sm font-medium text-black/50 hover:text-black hover:bg-black/5 rounded-xl transition-all"
-                          >
-                            {item}
-                          </a>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                )}
-              </div>
+              <a key={link.id} href={`#${link.id}`} className="text-sm font-medium text-white/50 hover:text-white transition-colors">{link.name}</a>
             ))}
-            <button 
-              onClick={() => setIsContactModalOpen(true)}
-              className="bg-black text-white px-5 py-2.5 text-sm font-medium rounded-full hover:bg-black/80 transition-all ml-4"
-            >
-              Invest Now
-            </button>
+            <button onClick={() => setIsContactModalOpen(true)} className="bg-white text-black px-6 py-2.5 text-sm font-bold rounded-full hover:bg-cyan-400 transition-all">Request Briefing</button>
           </div>
 
-          <button 
-            className="md:hidden p-2 text-black"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
+          <button className="md:hidden p-2 text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </nav>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed inset-0 z-40 bg-white pt-24 px-6 md:hidden overflow-y-auto"
-        >
-          <div className="flex flex-col gap-8">
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} className="fixed inset-0 z-40 bg-[#020617] pt-32 px-10 md:hidden flex flex-col gap-10">
             {NAV_LINKS.map(link => (
-              <div key={link.id} className="flex flex-col gap-4">
-                <div className="text-sm font-bold uppercase tracking-widest text-black/30">
-                  {link.name}
-                </div>
-                {link.dropdown ? (
-                  <div className="flex flex-col gap-4 pl-4 border-l border-black/5">
-                    {link.dropdown.map(item => (
-                      <a 
-                        key={item}
-                        href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                        className="text-2xl font-semibold text-black"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item}
-                      </a>
-                    ))}
-                  </div>
-                ) : (
-                  <a 
-                    href={`#${link.id}`}
-                    className="text-2xl font-semibold text-black"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </a>
-                )}
-              </div>
+              <a key={link.id} href={`#${link.id}`} onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-bold tracking-tighter">{link.name}</a>
             ))}
-            <button 
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                setIsContactModalOpen(true);
-              }}
-              className="w-full bg-black text-white py-5 text-lg font-semibold rounded-2xl shadow-lg mt-4"
-            >
-              Invest Now
-            </button>
-          </div>
-        </motion.div>
-      )}
+            <button onClick={() => { setIsMobileMenuOpen(false); setIsContactModalOpen(true); }} className="w-full bg-cyan-500 text-black py-6 text-xl font-bold rounded-2xl">Request Briefing</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <main className="relative pt-32 md:pt-48">
-        {/* Abstract Background Top */}
-        <div className="absolute top-0 left-0 right-0 h-[500px] pointer-events-none z-0 overflow-hidden opacity-30">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(255,236,0,0.15),transparent_70%)]" />
+      <main className="relative">
+        {/* Background Accents */}
+        <div className="absolute top-0 left-0 right-0 h-[1000px] pointer-events-none z-0 overflow-hidden">
+          <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-cyan-500/10 blur-[150px] rounded-full" />
+          <div className="absolute top-0 inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]" />
         </div>
 
-        <div className="relative z-10 max-w-[1000px] mx-auto px-5 lg:px-0 flex flex-col gap-24 md:gap-40 items-center">
+        <div className="relative z-10 max-w-[1200px] mx-auto px-6">
           {/* Hero Section */}
-          <section className="w-full text-center md:text-left">
-            <motion.p 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-xs md:text-sm uppercase tracking-widest font-medium text-black/40 mb-8"
+          <section id="home" className="pt-40 pb-32 md:pt-60 md:pb-52 text-center flex flex-col items-center">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex gap-2 mb-8"
             >
-              Strategic Orchestration
-            </motion.p>
+              {[ "AI Venture Studio", "Central Treasury", "Protocol Governance" ].map(tag => (
+                <span key={tag} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-cyan-400/80">{tag}</span>
+              ))}
+            </motion.div>
             
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-[40px] md:text-[72px] font-semibold leading-[1.1] tracking-[-0.04em] mb-12"
-            >
-              <span className="text-black">Vecna Global:</span><br />
-              <span className="text-[#86868b]">Orchestrating the Future</span>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-5xl md:text-[88px] font-bold leading-[1] tracking-[-0.05em] mb-10 max-w-4xl">
+              Building an AI product machine with disciplined <span className="text-cyan-400 italic">venture architecture.</span>
             </motion.h1>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-[22px] md:text-[32px] font-normal tracking-[-0.02em] leading-[1.3] text-[#86868b] max-w-3xl"
-            >
-              <strong className="text-black font-normal">Scaling deep-tech ventures with precision-engineered capital and institutional-grade infrastructure.</strong> Matched by stage, sector, and geography across the digital horizon.
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xl md:text-2xl text-white/50 max-w-3xl leading-relaxed mb-16">
+              Vecna Global B.V. connects AI product intelligence, founder governance, treasury coordination, and execution partners into one contract-backed operating structure.
             </motion.p>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 mt-16"
-            >
-              <button 
-                onClick={() => setIsContactModalOpen(true)}
-                className="bg-black text-white px-8 py-4 rounded-full font-medium hover:bg-black/90 transition-all flex items-center justify-center gap-2"
-              >
-                Enter Protocol <ArrowRight size={18} />
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex flex-col sm:flex-row gap-6">
+              <button onClick={() => setIsContactModalOpen(true)} className="bg-cyan-500 text-black px-10 py-5 rounded-full font-bold text-lg hover:bg-cyan-400 transition-all flex items-center gap-3">
+                Request Private Briefing <ArrowRight size={20} />
               </button>
-              <button 
-                onClick={() => setIsNetworkMapOpen(true)}
-                className="bg-white border border-black/10 text-black px-8 py-4 rounded-full font-medium hover:bg-black/5 transition-all"
-              >
-                View Network Map
-              </button>
+              <a href="#architecture" className="bg-white/5 border border-white/10 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white/10 transition-all">
+                Explore Operating Model
+              </a>
             </motion.div>
           </section>
 
-          {/* Stats Section */}
-          <section className="w-full grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-24">
-            {STATS.map((stat, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex flex-col gap-4"
-              >
-                <div className="text-[48px] md:text-[80px] font-normal tracking-[-0.04em] leading-none text-black">
-                  {stat.value}
-                </div>
-                <div className="text-base font-normal leading-relaxed text-black/60">
-                  <span className="text-black font-medium">{stat.unit}</span> — {stat.subtext}
-                </div>
-              </motion.div>
-            ))}
-          </section>
-
-          {/* Ecosystem Sectors */}
-          <section id="services" className="w-full scroll-mt-32">
-            <h2 className="text-xs md:text-sm uppercase tracking-widest font-medium text-black/40 mb-12">
-              Ecosystem Sectors
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {SECTORS.map((sector, idx) => (
-                <motion.div
-                  key={idx}
-                  id={sector.title.toLowerCase()}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-10 bg-[#f5f5f5] rounded-[32px] flex flex-col gap-8 group scroll-mt-32"
-                >
-                  <div className="size-12 bg-black rounded-2xl flex items-center justify-center text-white">
-                    <sector.icon size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-4">{sector.title}</h3>
-                    <p className="text-lg text-black/50 leading-relaxed mb-8">{sector.description}</p>
-                  </div>
-                  <button 
-                    onClick={() => setIsContactModalOpen(true)}
-                    className="w-fit inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-black/5 text-sm font-medium hover:bg-black hover:text-white transition-all"
-                  >
-                    {sector.cta} <ChevronRight size={14} />
-                  </button>
-                </motion.div>
-              ))}
+          {/* SECTION 2 — What This Is */}
+          <section id="what-we-do" className="py-32 scroll-mt-32">
+            <div className="mb-20 text-center">
+              <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 mb-4 italic">Operational Foundation</h2>
+              <div className="text-4xl md:text-6xl font-bold tracking-tighter">Not a community. Not a pitch deck. <br/>An operating structure.</div>
             </div>
-          </section>
-
-          {/* What We Do */}
-          <section id="what-we-do" className="w-full scroll-mt-32">
-            <h2 className="text-xs md:text-sm uppercase tracking-widest font-medium text-black/40 mb-12">
-              What We Do
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {WHAT_WE_DO.map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-10 bg-white border border-black/5 rounded-[32px] flex flex-col gap-6 hover:shadow-xl transition-all duration-500"
-                >
-                  <h3 className="text-2xl font-bold tracking-tight">{item.title}</h3>
-                  <p className="text-black/50 leading-relaxed">{item.description}</p>
-                  <ul className="space-y-3 mt-auto">
-                    {item.features.map(feature => (
-                      <li key={feature} className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-black/40">
-                        <div className="size-1.5 bg-primary-yellow rounded-full" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-
-          {/* Who We Serve */}
-          <section id="who-we-serve" className="w-full scroll-mt-32">
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="flex flex-col justify-center">
-                <h2 className="text-xs md:text-sm uppercase tracking-widest font-medium text-black/40 mb-6">
-                  Who We Serve
-                </h2>
-                <h3 className="text-[32px] md:text-[48px] font-bold tracking-tight leading-none mb-8">
-                  Tailored solutions for <span className="text-primary-yellow italic">sophisticated</span> capital.
-                </h3>
+              {WHAT_THIS_IS.map((item, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="p-10 bg-white/5 border border-white/10 rounded-[40px] hover:bg-white/[0.08] transition-all group"
+                >
+                  <div className="p-4 bg-cyan-500/10 rounded-2xl w-fit mb-8 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-black transition-all">
+                    <item.icon size={32} />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 tracking-tight">{item.title}</h3>
+                  <p className="text-white/50 leading-relaxed">{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* SECTION 3 — Architecture Diagram */}
+          <section id="architecture" className="py-32 scroll-mt-32 border-y border-white/5">
+            <div className="mb-20 text-center">
+              <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 mb-4">Structural Blueprint</h2>
+              <div className="text-4xl md:text-6xl font-bold tracking-tighter mb-8">Operating Architecture</div>
+              <p className="text-white/40 max-w-2xl mx-auto">Each layer has a clear function. The value is not in the number of names, but in separating legal structure, governance, products, treasury, and execution.</p>
+            </div>
+            <ArchitectureMap />
+          </section>
+
+          {/* SECTION 4 — Brand Hierarchy */}
+          <section id="brands" className="py-32 scroll-mt-32">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
+              <div className="max-w-2xl">
+                <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 mb-4">Ecosystem Layers</h2>
+                <div className="text-4xl md:text-6xl font-bold tracking-tighter">fly.sharonx.eu is today’s product face. SharonX is the expansion layer.</div>
               </div>
-              <div className="flex flex-col gap-6">
-                {WHO_WE_SERVE.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="p-8 bg-[#f5f5f5] rounded-[32px] flex gap-6 items-start group hover:bg-black hover:text-white transition-all duration-500"
-                  >
-                    <div className="p-4 bg-white/10 rounded-2xl text-primary-yellow group-hover:bg-primary-yellow group-hover:text-black transition-colors">
-                      <item.icon size={24} />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {BRAND_HIERARCHY.map((brand, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="p-8 bg-[#0f172a]/50 border border-white/5 rounded-3xl hover:border-cyan-500/30 transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/40">{brand.status}</span>
+                      <Layers size={16} className="text-cyan-500/50" />
                     </div>
+                    <h3 className="text-2xl font-bold mb-1 tracking-tight">{brand.title}</h3>
+                    <div className="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-4 italic">{brand.subtitle}</div>
+                    <p className="text-white/40 text-sm leading-relaxed">{brand.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* SECTION 5 — Venture Studio Caps */}
+          <section className="py-32 scroll-mt-32 border-t border-white/5">
+            <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-cyan-400/50 mb-12">Product Capability Matrix</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {VENTURE_CAPS.map((cap, i) => (
+                <div key={i} className="flex flex-col gap-6">
+                  <div className="size-14 bg-cyan-500/10 rounded-2xl flex items-center justify-center text-cyan-400">
+                    <cap.icon size={28} />
+                  </div>
+                  <h3 className="text-2xl font-bold tracking-tight">{cap.title}</h3>
+                  <p className="text-white/50 leading-relaxed text-sm">{cap.description}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-20 p-8 border border-white/5 rounded-[32px] bg-gradient-to-r from-transparent to-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+               <div className="text-xl md:text-2xl font-medium tracking-tight text-white/80 italic">"The first product focus is practical: ship, test, sell, measure, and scale before expanding the narrative."</div>
+            </div>
+          </section>
+
+          {/* SECTION 6 — Treasury */}
+          <section className="py-32 scroll-mt-32">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+              <div>
+                <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 mb-4">Economic Backbone</h2>
+                <div className="text-4xl md:text-6xl font-bold tracking-tighter mb-8 leading-tight">Central treasury. Controlled payout. Venture-based accountability.</div>
+                <p className="text-white/50 text-lg mb-12">Revenue should not be scattered across informal arrangements. Each product maintains operational responsibility, while the economic backbone remains visible and controlled.</p>
+                
+                <div className="space-y-4">
+                  {["Central Treasury", "Controlled Payout", "Venture-Based Entitlement"].map(item => (
+                    <div key={item} className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                      <div className="size-3 bg-cyan-500 rounded-full" />
+                      <span className="font-bold tracking-tight">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-10 border border-white/10 bg-white/5 rounded-[40px] relative overflow-hidden">
+                <div className="flex flex-col gap-10 relative z-10">
+                  <div className="flex justify-between items-center bg-white/5 p-6 rounded-2xl border border-white/5">
+                    <div className="flex items-center gap-3">
+                      <Users size={20} className="text-cyan-400" />
+                      <div className="font-bold">Customer</div>
+                    </div>
+                    <ArrowRight size={20} className="text-white/20" />
+                    <div className="font-bold text-white/40">Product Revenue</div>
+                  </div>
+                  
+                  <div className="flex justify-center flex-col items-center">
+                    <div className="px-6 py-3 bg-cyan-500 text-black font-bold rounded-xl text-sm italic">Soolx Payment Infrastructure</div>
+                    <ArrowRight size={24} className="rotate-90 my-2 text-white/20" />
+                    <div className="px-6 py-4 bg-white text-black font-bold rounded-2xl text-md flex items-center gap-3">
+                      <Building2 size={20} /> Vecna Global Treasury
+                    </div>
+                    <ArrowRight size={24} className="rotate-90 my-2 text-white/20" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-white/5 border border-white/10 rounded-xl text-center">
+                      <div className="text-xs font-bold text-white/60">Founders</div>
+                    </div>
+                    <div className="p-4 bg-white/5 border border-white/10 rounded-xl text-center">
+                      <div className="text-xs font-bold text-white/60">Builders</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-cyan-500/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION 7 — Team */}
+          <section id="team" className="py-32 scroll-mt-32 border-t border-white/5">
+            <div className="mb-20">
+              <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 mb-4">Founder & Execution Board</h2>
+              <div className="text-4xl md:text-6xl font-bold tracking-tighter">A founder table designed for execution, <br/>not title inflation.</div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {FOUNDERS.map((founder, i) => (
+                <motion.div 
+                   key={i} 
+                   whileHover={{ y: -10 }}
+                   className="p-8 bg-white/5 border border-white/10 rounded-3xl group"
+                >
+                  <div className="size-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-6 group-hover:bg-cyan-500 group-hover:text-black transition-all">
+                    <founder.icon size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-1 tracking-tight">{founder.name}</h3>
+                  <div className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4">{founder.role}</div>
+                  <p className="text-white/40 text-sm leading-relaxed">{founder.description}</p>
+                </motion.div>
+              ))}
+            </div>
+            <p className="mt-12 text-white/30 text-sm italic max-w-2xl">“The value for investors and partners is role clarity, documented incentives, measurable execution, and disciplined decision-making.”</p>
+          </section>
+
+          {/* SECTION 8 — Governance */}
+          <section id="governance" className="py-32 scroll-mt-32">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              <div className="lg:col-span-1">
+                <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 mb-4">Governance Framework</h2>
+                <div className="text-4xl md:text-5xl font-bold tracking-tighter mb-8 leading-tight">Trust becomes scalable only when it is written.</div>
+                <button onClick={() => setIsContactModalOpen(true)} className="flex items-center gap-2 text-cyan-400 font-bold uppercase tracking-widest text-xs hover:text-white transition-colors">
+                  Request Governance Brief <ChevronRight size={16} />
+                </button>
+              </div>
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                {GOVERNANCE.map((item, i) => (
+                  <div key={i} className="p-8 bg-[#0f172a] border border-white/5 rounded-3xl flex gap-6 items-start">
+                    <div className="p-3 bg-white/5 rounded-xl text-cyan-400"><item.icon size={20} /></div>
                     <div>
-                      <h4 className="text-xl font-bold mb-2 tracking-tight">{item.title}</h4>
-                      <p className="text-sm opacity-50 leading-relaxed">{item.description}</p>
+                      <h4 className="font-bold mb-2 tracking-tight">{item.title}</h4>
+                      <p className="text-white/40 text-sm leading-relaxed">{item.description}</p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
           </section>
 
-          {/* Structural Pillars */}
-          <section className="w-full">
-            <h2 className="text-xs md:text-sm uppercase tracking-widest font-medium text-black/40 mb-12">
-              Structural Pillars
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {PILLARS.map((pillar, idx) => (
-                <motion.div
-                  key={pillar.id}
-                  id={pillar.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-8 border border-black/5 rounded-[32px] hover:bg-white hover:shadow-xl transition-all duration-500 scroll-mt-32"
-                >
-                  <h3 className="text-xl font-bold mb-4 tracking-tight">{pillar.title}</h3>
-                  <p className="text-black/50 leading-relaxed mb-6">{pillar.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {pillar.features.map(feature => (
-                      <span key={feature} className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 bg-black/5 rounded-full text-black/40">
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
+          {/* SECTION 9 — Builder Network */}
+          <section className="py-32 scroll-mt-32 border-t border-white/5">
+            <div className="flex flex-col md:flex-row gap-20">
+              <div className="flex-1">
+                <h3 className="text-4xl font-bold tracking-tighter mb-6">A focused builder network for execution quality.</h3>
+                <p className="text-white/40 leading-relaxed mb-10">The audience layer is not vanity. It is used for demand testing, message validation, early access, and distribution leverage.</p>
+                
+                <div className="space-y-2">
+                  {["Founder Core", "Execution Companies", "Founding Builders", "Active Builder Network", "Partners & Stakeholders", "Audience Layer"].map((tier, i) => (
+                     <div key={i} className="flex justify-between items-center p-4 bg-white/5 border-l-2 border-cyan-500/20 hover:border-cyan-500 transition-all">
+                        <span className="font-bold text-sm">{tier}</span>
+                        <div className="size-1.5 rounded-full bg-cyan-500/30" />
+                     </div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex-1 bg-gradient-to-br from-white/5 to-transparent p-12 rounded-[40px] border border-white/10 flex flex-col justify-center items-center text-center">
+                 <Globe className="text-cyan-500 size-16 mb-8 opacity-50" />
+                 <div className="text-2xl font-bold italic tracking-tight">"Not a public community. Controlled execution capacity."</div>
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION 10 — Roadmap */}
+          <section className="py-32 scroll-mt-32 border-t border-white/5">
+            <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 mb-12">First 30 Days Milestone</h2>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {ROADMAP.map((item, i) => (
+                <div key={i} className="relative p-6 bg-white/5 border border-white/10 rounded-2xl group overflow-hidden">
+                  <div className="text-[40px] font-black text-white/5 absolute top-2 right-2 group-hover:text-cyan-500/10 transition-colors leading-none">{item.step}</div>
+                  <h4 className="font-bold text-sm mb-3 relative z-10">{item.title}</h4>
+                  <p className="text-[11px] text-white/40 leading-relaxed relative z-10">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-12 text-center text-white/30 text-xs font-bold uppercase tracking-widest italic">Signal Detection & Activation Phase</div>
+          </section>
+
+          {/* SECTION 11 — Investment */}
+          <section className="py-32 scroll-mt-32 border-t border-white/5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {INVESTMENT_WHY.map((item, i) => (
+                <div key={i} className="p-10 border border-white/5 bg-[#0f172a] rounded-[40px]">
+                  <h3 className="text-2xl font-bold mb-6 tracking-tight text-cyan-400">{item.title}</h3>
+                  <p className="text-white/50 leading-relaxed">{item.desc}</p>
+                </div>
               ))}
             </div>
           </section>
 
-          {/* CTA / Final Section */}
-          <section className="w-full pb-40">
-             <motion.div 
-               initial={{ opacity: 0, scale: 0.95 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
-               className="bg-black text-white p-12 md:p-24 rounded-[48px] text-center flex flex-col items-center gap-10"
-             >
-               <h2 className="text-[32px] md:text-[56px] font-semibold leading-[1.2] tracking-[-0.04em] max-w-2xl">
-                 Ready to orchestrate your position in the next generation?
-               </h2>
-               <p className="text-lg md:text-xl text-white/50 max-w-xl">
-                 Secure your position in the next generation of technological dominance.
-               </p>
-               <button 
+          {/* SECTION 12 — Final CTA */}
+          <section className="py-40 text-center">
+            <motion.div 
+               whileInView={{ scale: [0.95, 1], opacity: [0, 1] }}
+               className="max-w-3xl mx-auto"
+            >
+              <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-12">Request a private venture architecture briefing.</h2>
+              <button 
                 onClick={() => setIsContactModalOpen(true)}
-                className="bg-white text-black px-12 py-5 rounded-full text-lg font-semibold hover:bg-white/90 transition-all"
+                className="inline-flex items-center gap-3 px-12 py-6 bg-cyan-500 text-black font-black uppercase tracking-[0.2em] rounded-full hover:bg-cyan-400 transition-all shadow-[0_20px_50px_rgba(6,182,212,0.3)]"
               >
-                 Join the Network
-               </button>
-             </motion.div>
+                Access Protocol <ArrowRight size={24} />
+              </button>
+            </motion.div>
           </section>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-black/5 py-12">
-        <div className="max-w-[1000px] mx-auto px-5 lg:px-0 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-2">
+      <footer className="border-t border-white/5 py-12 bg-black/50 backdrop-blur-3xl">
+        <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-3 opacity-50">
             <PromptHeart />
-            <span className="font-bold">Vecna Global</span>
+            <span className="font-bold tracking-tight text-white/80">Vecna Global B.V.</span>
           </div>
-          <div className="flex gap-8">
-            {["What We Do", "Who We Serve", "Network", "Compliance", "Security", "Privacy"].map(item => (
-              <a key={item} href={`#${item.toLowerCase().replace(/ /g, "-")}`} className="text-xs font-medium text-black/40 hover:text-black transition-colors uppercase tracking-widest">{item}</a>
+          <div className="flex flex-wrap justify-center gap-8">
+            {NAV_LINKS.map(item => (
+              <a key={item.id} href={`#${item.id}`} className="text-[10px] font-black text-white/30 hover:text-cyan-400 transition-colors uppercase tracking-[0.3em] italic">{item.name}</a>
             ))}
           </div>
-          <div className="text-xs font-medium text-black/30 whitespace-nowrap">
-            © 2024 VECNA GLOBAL. ALL SYSTEMS SECURED.
+          <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
+            © 2026 Strategic Orchestration OS
           </div>
         </div>
       </footer>
     </div>
   );
 }
-
