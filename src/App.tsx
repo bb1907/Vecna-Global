@@ -232,52 +232,65 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 };
 
 const ArchitectureMap = () => (
-  <div className="relative w-full max-w-4xl mx-auto py-20">
-    <div className="flex flex-col items-center gap-12 relative z-10">
+  <div className="relative w-full max-w-5xl mx-auto py-20 px-4">
+    <div className="flex flex-col items-center relative z-10">
+      {/* Root node */}
       <motion.div 
-        whileHover={{ scale: 1.05 }}
-        className="p-8 bg-primary-yellow text-black rounded-3xl font-bold text-center shadow-[0_0_50px_rgba(255,236,0,0.3)] border-2 border-white/20"
+        whileHover={{ scale: 1.02 }}
+        className="p-10 bg-primary-yellow text-black rounded-[2.5rem] font-bold text-center shadow-[0_30px_60px_-12px_rgba(255,236,0,0.3)] border-2 border-white/20 relative z-20 group"
       >
-        Vecna Global B.V.
-        <div className="text-[10px] uppercase tracking-widest mt-1 opacity-70">Strategic Parent</div>
+        <div className="text-3xl font-display tracking-tight group-hover:tracking-normal transition-all">Vecna Global B.V.</div>
+        <div className="text-[11px] uppercase tracking-[0.3em] mt-3 font-black opacity-60">Strategic Parent & Legal Hub</div>
       </motion.div>
 
-      <div className="flex flex-col items-center gap-2">
-        <div className="h-10 w-[1px] bg-white/20" />
-        <div className="px-6 py-3 bg-white/5 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-primary-yellow">T-BEC Protocol</div>
-        <div className="h-10 w-[1px] bg-white/20" />
+      {/* Protocol Layer */}
+      <div className="flex flex-col items-center relative py-12">
+        <div className="h-16 w-[2px] bg-gradient-to-b from-primary-yellow to-white/10" />
+        <div className="px-10 py-4 glass border-white/20 rounded-full text-sm font-black uppercase tracking-[0.4em] text-primary-yellow shadow-xl relative z-20">
+          T-BEC Protocol
+        </div>
+        <div className="h-16 w-[2px] bg-white/10" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-        {["Soolx Treasury", "YapZek AI", "GBeess Growth"].map((exec, i) => (
+      {/* Execution Layer */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full relative">
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-white/5 -translate-y-px hidden md:block" />
+        {[
+          { name: "Soolx Treasury", label: "Financial Engine" },
+          { name: "YapZek AI", label: "Dev & Intel Hub" },
+          { name: "GBeess Growth", label: "Activation Network" }
+        ].map((exec, i) => (
           <motion.div 
-            key={exec}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            key={exec.name}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.1 }}
-            className="p-6 bg-white/5 border border-white/10 rounded-2xl text-center"
+            className="p-8 glass rounded-3xl text-center glass-hover group"
           >
-            <div className="font-bold text-sm text-white mb-1">{exec}</div>
-            <div className="text-[9px] uppercase tracking-widest text-white/30">Execution Network</div>
+            <div className="font-bold text-lg text-white mb-1 font-display group-hover:text-primary-yellow transition-colors">{exec.name}</div>
+            <div className="text-[10px] uppercase tracking-widest text-white/30 font-black">{exec.label}</div>
           </motion.div>
         ))}
       </div>
 
-      <div className="h-10 w-[1px] bg-white/20" />
+      <div className="h-16 w-[2px] bg-white/5 my-8" />
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">
+      {/* Product Layer */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 w-full">
         {["fly.sharonx.eu", "SharonXAcademy", "Yuff!", "Sharon", "OS-Carr"].map((product) => (
-          <div key={product} className="p-4 bg-white/5 border border-white/10 rounded-xl text-center opacity-60">
-            <div className="font-medium text-[10px] text-white">{product}</div>
+          <div key={product} className="p-5 glass rounded-2xl text-center opacity-40 hover:opacity-100 transition-all border-white/5 hover:border-primary-yellow/20">
+            <div className="font-bold text-[10px] text-white tracking-tight uppercase font-display">{product}</div>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 px-6 py-2 bg-primary-yellow/10 border border-primary-yellow/20 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-primary-yellow">
+      <div className="mt-16 px-10 py-3 bg-primary-yellow/5 border border-primary-yellow/10 rounded-full text-[11px] font-black uppercase tracking-[0.4em] text-primary-yellow/70 italic hover:text-primary-yellow transition-colors cursor-default">
         hub.vecna.global (Operating OS)
       </div>
     </div>
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,236,0,0.05),transparent_70%)]" />
+    
+    {/* Background Glow */}
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-full bg-primary-yellow/[0.03] blur-[150px] pointer-events-none rounded-full" />
   </div>
 );
 
@@ -298,7 +311,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] selection:bg-primary-yellow selection:text-black overflow-x-hidden text-white font-sans">
+    <div className="min-h-screen bg-background text-text-main font-sans antialiased selection:bg-primary-yellow selection:text-black neural-grid">
       <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
 
       {/* Navigation */}
@@ -347,14 +360,14 @@ export default function App() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex gap-2 mb-8"
+              className="flex flex-wrap justify-center gap-2 mb-8"
             >
-              {[ "AI Venture Studio", "Central Treasury", "Protocol Governance" ].map(tag => (
+              {[ "AI Venture Studio", "Central Treasury", "Protocol Governance", "Founder-Led Execution" ].map(tag => (
                 <span key={tag} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary-yellow/80">{tag}</span>
               ))}
             </motion.div>
             
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-5xl md:text-[88px] font-bold leading-[1] tracking-[-0.05em] mb-10 max-w-4xl">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-5xl md:text-[88px] font-bold leading-[1.05] tracking-tight mb-10 max-w-4xl font-display">
               Building an AI product machine with disciplined <span className="text-primary-yellow italic">venture architecture.</span>
             </motion.h1>
 
@@ -386,13 +399,13 @@ export default function App() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="p-10 bg-white/5 border border-white/10 rounded-[40px] hover:bg-white/[0.08] transition-all group"
+                  className="p-10 glass rounded-[40px] glass-hover group"
                 >
                   <div className="p-4 bg-primary-yellow/10 rounded-2xl w-fit mb-8 text-primary-yellow group-hover:bg-primary-yellow group-hover:text-black transition-all">
                     <item.icon size={32} />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 tracking-tight">{item.title}</h3>
-                  <p className="text-white/50 leading-relaxed">{item.description}</p>
+                  <h3 className="text-3xl font-bold mb-4 tracking-tight font-display">{item.title}</h3>
+                  <p className="text-white/50 text-lg leading-relaxed">{item.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -424,14 +437,14 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  className="p-8 bg-[#0f172a]/50 border border-white/5 rounded-3xl hover:border-primary-yellow/30 transition-all flex flex-col justify-between"
+                  className="p-8 glass rounded-3xl hover:border-primary-yellow/30 transition-all flex flex-col justify-between group"
                 >
                   <div>
                     <div className="flex justify-between items-center mb-6">
                       <span className="text-[10px] font-black uppercase tracking-[0.2em] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/40">{brand.status}</span>
-                      <Layers size={16} className="text-primary-yellow/50" />
+                      <Layers size={16} className="text-primary-yellow/50 group-hover:text-primary-yellow transition-colors" />
                     </div>
-                    <h3 className="text-2xl font-bold mb-1 tracking-tight">{brand.title}</h3>
+                    <h3 className="text-2xl font-bold mb-1 tracking-tight font-display">{brand.title}</h3>
                     <div className="text-primary-yellow text-xs font-bold uppercase tracking-widest mb-4 italic">{brand.subtitle}</div>
                     <p className="text-white/40 text-sm leading-relaxed">{brand.description}</p>
                   </div>
@@ -477,36 +490,46 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="p-10 border border-white/10 bg-white/5 rounded-[40px] relative overflow-hidden">
+              <div className="p-10 glass rounded-[40px] relative overflow-hidden glass-hover group">
                 <div className="flex flex-col gap-10 relative z-10">
-                  <div className="flex justify-between items-center bg-white/5 p-6 rounded-2xl border border-white/5">
+                  <div className="flex justify-between items-center bg-white/5 p-6 rounded-2xl border border-white/5 group-hover:bg-white/10 transition-all">
                     <div className="flex items-center gap-3">
                       <Users size={20} className="text-primary-yellow" />
-                      <div className="font-bold">Customer</div>
+                      <div className="font-bold font-display">Customer</div>
                     </div>
-                    <ArrowRight size={20} className="text-white/20" />
-                    <div className="font-bold text-white/40">Product Revenue</div>
+                    <ArrowRight size={20} className="text-white/20 group-hover:text-primary-yellow transition-colors" />
+                    <div className="font-bold text-white/40 font-display">Product Revenue</div>
                   </div>
                   
                   <div className="flex justify-center flex-col items-center">
-                    <div className="px-6 py-3 bg-primary-yellow text-black font-bold rounded-xl text-sm italic">Soolx Payment Infrastructure</div>
-                    <ArrowRight size={24} className="rotate-90 my-2 text-white/20" />
-                    <div className="px-6 py-4 bg-white text-black font-bold rounded-2xl text-md flex items-center gap-3">
-                      <Building2 size={20} /> Vecna Global Treasury
-                    </div>
-                    <ArrowRight size={24} className="rotate-90 my-2 text-white/20" />
+                    <motion.div 
+                      whileHover={{ scale: 1.05 }}
+                      className="px-6 py-3 bg-primary-yellow text-black font-black rounded-xl text-[10px] uppercase tracking-[0.2em] italic shadow-[0_0_30px_rgba(255,236,0,0.2)]"
+                    >
+                      Soolx Payment Infrastructure
+                    </motion.div>
+                    <ArrowRight size={24} className="rotate-90 my-3 text-white/10" />
+                    <motion.div 
+                      whileHover={{ scale: 1.05 }}
+                      className="px-8 py-5 bg-white text-black font-bold rounded-2xl text-lg flex items-center gap-4 shadow-xl font-display"
+                    >
+                      <Building2 size={24} /> Vecna Global Treasury
+                    </motion.div>
+                    <ArrowRight size={24} className="rotate-90 my-3 text-white/10" />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-white/5 border border-white/10 rounded-xl text-center">
-                      <div className="text-xs font-bold text-white/60">Founders</div>
+                    <div className="p-5 bg-white/5 border border-white/10 rounded-2xl text-center group-hover:border-primary-yellow/20 transition-all">
+                      <div className="text-[10px] uppercase tracking-[0.2em] font-black text-white/60 mb-2">Founders</div>
+                      <div className="h-1 w-full bg-primary-yellow/20 rounded-full" />
                     </div>
-                    <div className="p-4 bg-white/5 border border-white/10 rounded-xl text-center">
-                      <div className="text-xs font-bold text-white/60">Builders</div>
+                    <div className="p-5 bg-white/5 border border-white/10 rounded-2xl text-center group-hover:border-primary-yellow/20 transition-all">
+                      <div className="text-[10px] uppercase tracking-[0.2em] font-black text-white/60 mb-2">Builders</div>
+                      <div className="h-1 w-full bg-primary-yellow/20 rounded-full" />
                     </div>
                   </div>
                 </div>
-                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-primary-yellow/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary-yellow/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
               </div>
             </div>
           </section>
@@ -542,19 +565,19 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="lg:col-span-1">
                 <h2 className="text-xs font-bold uppercase tracking-[0.4em] text-primary-yellow mb-4">Governance Framework</h2>
-                <div className="text-4xl md:text-[88px] font-bold leading-[1] tracking-[-0.05em] mb-10 max-w-4xl">
+                <div className="text-4xl md:text-7xl font-bold leading-[1.1] tracking-tight mb-10 max-w-4xl font-display">
                   Trust becomes scalable only when it <span className="text-primary-yellow italic">is written.</span>
                 </div>
-                <button onClick={() => setIsContactModalOpen(true)} className="flex items-center gap-2 text-primary-yellow font-bold uppercase tracking-widest text-xs hover:text-white transition-colors">
-                  Request Governance Brief <ChevronRight size={16} />
+                <button onClick={() => setIsContactModalOpen(true)} className="flex items-center gap-2 text-primary-yellow font-black uppercase tracking-widest text-[10px] hover:text-white transition-colors">
+                  Request Governance Brief <ChevronRight size={14} />
                 </button>
               </div>
               <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {GOVERNANCE.map((item, i) => (
-                  <div key={i} className="p-8 bg-[#0f172a] border border-white/5 rounded-3xl flex gap-6 items-start">
+                  <div key={i} className="p-8 glass rounded-3xl flex gap-6 items-start glass-hover">
                     <div className="p-3 bg-white/5 rounded-xl text-primary-yellow"><item.icon size={20} /></div>
                     <div>
-                      <h4 className="font-bold mb-2 tracking-tight">{item.title}</h4>
+                      <h4 className="font-bold mb-2 tracking-tight text-xl font-display">{item.title}</h4>
                       <p className="text-white/40 text-sm leading-relaxed">{item.description}</p>
                     </div>
                   </div>
@@ -616,15 +639,15 @@ export default function App() {
           {/* SECTION 12 — Final CTA */}
           <section className="py-40 text-center">
             <motion.div 
-               whileInView={{ scale: [0.95, 1], opacity: [0, 1] }}
-               className="max-w-3xl mx-auto"
+               whileInView={{ scale: [0.98, 1], opacity: [0, 1] }}
+               className="max-w-4xl mx-auto"
             >
-              <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-12">Request a private venture architecture briefing.</h2>
+              <h2 className="text-5xl md:text-[90px] font-bold tracking-tight mb-12 font-display leading-[1]">Request a private venture architecture <span className="text-primary-yellow italic underline underline-offset-8 decoration-white/10">briefing.</span></h2>
               <button 
                 onClick={() => setIsContactModalOpen(true)}
-                className="inline-flex items-center gap-3 px-12 py-6 bg-primary-yellow text-black font-black uppercase tracking-[0.2em] rounded-full hover:bg-primary-yellow/80 transition-all shadow-[0_20px_50px_rgba(255,236,0,0.3)]"
+                className="inline-flex items-center gap-3 px-12 py-6 bg-primary-yellow text-black font-black uppercase tracking-[0.2em] rounded-full hover:bg-white transition-all shadow-[0_20px_50px_rgba(255,236,0,0.3)] group"
               >
-                Access Protocol <ArrowRight size={24} />
+                Access Protocol <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>
           </section>
